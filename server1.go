@@ -4,22 +4,23 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 func request(w http.ResponseWriter, r *http.Request) {
-	message, err := http.Get("http://localhost:8080/first")
+	dest := "http://localhost:" + os.Getenv("DEST") + "/first"
+	message, err := http.Get(dest)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	//defer message.Body.Close()
+	w.Write([]byte("segundo\n"))
+	defer message.Body.Close()
 	body, err := ioutil.ReadAll(message.Body)
 	if err != nil {
 		print(err)
 		return
 	}
-
 	w.Write([]byte(body))
 }
 

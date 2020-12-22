@@ -11,7 +11,7 @@ COPY server .
 
 EXPOSE 8080 8081
 
-ENV GOGC 40
+ENV DEST 8081
 
 RUN apk --no-cache add curl
 
