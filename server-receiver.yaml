@@ -2,28 +2,28 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: bento-server
-  name: bento-server
+    app: bento-receiver
+  name: bento-receiver
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: bento-server
+      app: bento-receiver
   template:
     metadata:
       labels:
-        app: bento-server
+        app: bento-receiver
     spec:
       containers:
       - image: 558830342743.dkr.ecr.us-east-1.amazonaws.com/bento-test:latest
-        name: bento-server
+        name: bento-receiver
         ports:
-        - containerPort: 3000
+        - containerPort: 8080
         env:
-        - name: DEST
-          value: 8080
+          - name: DEST
+            value: 'http://localhost:8080'
 
----
+--- 
 apiVersion: v1
 kind: Service
 metadata:
@@ -32,8 +32,18 @@ metadata:
 spec:
   type: NodePort
   selector:
-    bb: web
+    app: bento-receiver
   ports:
   - port: 8080
     targetPort: 8080
     nodePort: 30001
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service
+  namespace: prod
+spec:
+  type: ExternalName
+  externalName: my.database.example.com

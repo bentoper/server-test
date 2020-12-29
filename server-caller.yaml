@@ -2,37 +2,37 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: bento-server
-  name: bento-server
+    app: bento-caller
+  name: bento-caller
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: bento-server
+      app: bento-caller
   template:
     metadata:
       labels:
-        app: bento-server
+        app: bento-caller
     spec:
       containers:
       - image: 558830342743.dkr.ecr.us-east-1.amazonaws.com/bento-test:latest
-        name: bento-server
+        name: bento-caller
         ports:
-        - containerPort: 3000
+        - containerPort: 8081
         env:
-        - name: DEST
-          value: 8080
+          - name: DEST
+            value: 'http://10.43.246.125:8080/first' 
           
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: server-entrypoint
+  name: server-callpoint
   namespace: default
 spec:
   type: NodePort
   selector:
-    bb: web
+    app: bento-caller
   ports:
   - port: 8081
     targetPort: 8081

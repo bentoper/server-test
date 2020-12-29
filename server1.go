@@ -3,14 +3,16 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 )
 
 func request(w http.ResponseWriter, r *http.Request) {
-	dest := "http://localhost:" + os.Getenv("DEST") + "/first"
+	dest := os.Getenv("DEST")
 	message, err := http.Get(dest)
 	if err != nil {
+		log.Fatal(err)
 		fmt.Println(err)
 		return
 	}
