@@ -2,40 +2,39 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: bento-caller
-  name: bento-caller
+    app: bento-test
+  name: bento-test
+  namespace: test
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: bento-caller
+      app: bento-test
   template:
     metadata:
       labels:
-        app: bento-caller
+        app: bento-test
     spec:
       containers:
       - image: 558830342743.dkr.ecr.us-east-1.amazonaws.com/bento-test:latest
-        name: bento-caller
-        securityContext:
-          privileged: true
+        name: bento-test
         ports:
-        - containerPort: 8081
+        - containerPort: 8082
         env:
           - name: DEST
-            value: 'http://server-entrypoint.infrastructure.svc.cluster.local:8080/first' 
-    
+            value: 'http://10.43.231.254:8081/second' 
           
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: server-callpoint
+  name: server-test
+  namespace: test
 spec:
   type: NodePort
   selector:
-    app: bento-caller
+    app: bento-test
   ports:
-  - port: 8081
+  - port: 8082
     targetPort: 8081
-    nodePort: 30002
+    nodePort: 30003

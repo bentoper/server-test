@@ -10,10 +10,15 @@ import (
 
 func request(w http.ResponseWriter, r *http.Request) {
 	dest := os.Getenv("DEST")
+	/*client := &http.Client{
+		CheckRedirect: func(req *http.Request, via []*http.Request) error {
+			return http.ErrUseLastResponse
+		},
+	}*/
 	message, err := http.Get(dest)
 	if err != nil {
-		log.Fatal(err)
 		fmt.Println(err)
+		log.Fatal(err)
 		return
 	}
 	w.Write([]byte("segundo\n"))
