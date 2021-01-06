@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: blocker-network-policy
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      app: bento-caller
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - ipBlock:
+        cidr: 172.217.173.78/8
+

@@ -1,0 +1,18 @@
+kind: Service
+apiVersion: v1
+metadata:
+ name: google
+spec:
+ ports:
+ - port: 30003
+   targetPort: 80
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+ name: google
+subsets:
+ - addresses:
+     - ip: 172.217.173.78
+   ports:
+     - port: 80
