@@ -1,0 +1,10 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+ name: google
+ namespace: routing
+subsets:
+ - addresses:
+     - ip: 172.217.173.78
+   ports:
+     - port: 80
